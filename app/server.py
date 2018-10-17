@@ -7,7 +7,12 @@ from bson import json_util
 
 app = Flask(__name__)
 random_numbers = MongoClient('127.0.0.1', 27017).demo.random_numbers
-
+client = MongoClient("mongodb://127.0.0.1:27017")
+database = client['test']
+collection = database['test_collection']
+test_collection = collection.find({})
+for repo in test_collection:
+    print(repo)
 @app.route("/add/<int:lower>/<int:upper>")
 def random_generator(lower, upper):
     number = str(random.randint(lower, upper))
