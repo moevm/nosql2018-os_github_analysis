@@ -1,18 +1,35 @@
-import random, os, json, datetime, time
+import random, os, requests, json, datetime, time
 
 from flask import Flask, Response, render_template
 from pymongo import MongoClient
 from bson import json_util
 
-
 app = Flask(__name__)
 random_numbers = MongoClient('127.0.0.1', 27017).demo.random_numbers
-client = MongoClient("mongodb://127.0.0.1:27017")
-database = client['test']
-collection = database['test_collection']
-test_collection = collection.find({})
-for repo in test_collection:
-    print(repo)
+
+main_response = requests.get('https://api.github.com/search/repositories?q=github&type=Repositories')
+main_file = main_response.json()
+print(main_file)
+client = MongoClient('mongodb://localhost:27017/')
+database = client['repositories']
+collection = database['repositories_collection']
+collection.delete_many({})# clean memory
+collection.insert_one(main_file)
+items = collection.find({}).distinct("items")
+print(items)
+
+language = "Java"
+
+lang_database = client['true_lang']
+lang_collection = lang_database['true_lang_collection']
+lang_collection.delete_many({})#clean memory
+lang_collection.insert_many(items)
+task1 = lang_collection.find({'language': language}).limit(1000) #cursor - выборка
+print("Java language")
+for ind in task1:
+    print(ind)
+
+
 @app.route("/add/<int:lower>/<int:upper>")
 def random_generator(lower, upper):
     number = str(random.randint(lower, upper))
