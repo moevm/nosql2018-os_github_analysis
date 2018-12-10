@@ -1,0 +1,118 @@
+
+// WebKit font-smoothing
+// Values: none, antialiased (default), subpixel-antialiased
+@mixin font-smoothing($value: antialiased) {
+    @if $value == antialiased {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    @else {
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: auto;
+    }
+}
+
+// Cross-browser mixins transition cubic-bezier
+@mixin bezier-transition($transition-property, $transition-time, $method) {
+    -webkit-transition: $transition-property $transition-time $method;
+    -moz-transition: $transition-property $transition-time $method;
+    -ms-transition: $transition-property $transition-time $method;
+    -o-transition: $transition-property $transition-time $method;
+    transition: $transition-property $transition-time $method;
+}
+
+// Cross-browser mixins background-size
+@mixin cover () {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+// Cross-browser mixins border-radius
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+// Cross-browser mixins rotate
+@mixin rotate($rotate) {
+    -ms-transform: rotate($rotate);
+    /* IE 9 */
+    -webkit-transform: rotate($rotate);
+    /* Chrome, Safari, Opera */
+    -moz-transform: rotate($rotate);
+    transform: rotate($rotate);
+}
+
+/* Mixin */
+@mixin vertical-align {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+// Devices Media Queries
+$special-phone: 736px;
+$special-tablet: 1024px;
+
+// General Media Queries
+$small-phone: 320px; // iPhone 5
+$phone-width: 420px; // iPhone 6 / 6+
+$tablet-width: 768px;
+$medium-width: 1024px;
+$notebook-width: 1366px;
+$desktop-width: 1600px;
+
+@mixin landscape-phone {
+    @media screen and (max-device-width: $special-phone) and (orientation: landscape) {
+        @content;
+    }
+}
+
+@mixin landscape-tablet {
+    @media only screen and (max-device-width: $special-tablet) and (orientation: landscape) {
+        @content;
+    }
+}
+
+@mixin small-phone {
+    @media only screen and (max-width: $small-phone) {
+        @content;
+    }
+}
+
+@mixin phone {
+    @media only screen and (max-width: $phone-width) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media only screen and (max-width: $tablet-width) {
+        @content;
+    }
+}
+
+@mixin medium {
+    @media only screen and (max-width: $medium-width) {
+        @content;
+    }
+}
+
+@mixin notebook {
+    @media only screen and (max-width: $notebook-width) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media only screen and (max-width: $desktop-width) {
+        @content;
+    }
+}
