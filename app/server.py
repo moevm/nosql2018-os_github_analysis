@@ -7,7 +7,11 @@ from bson import json_util
 app = Flask(__name__)
 random_numbers = MongoClient('127.0.0.1', 27017).demo.random_numbers
 
-main_response = requests.get('https://api.github.com/search/repositories?q=github&type=Repositories')
+
+main_response = requests.get('https://api.github.com/search/repositories?&q=opensource&type=Repositories')
+# link = main_response.headers.get('link', None)
+# if link is not None:
+#     print(link)
 main_file = main_response.json()
 print(main_file)
 client = MongoClient('mongodb://localhost:27017/')
@@ -18,13 +22,14 @@ collection.insert_one(main_file)
 items = collection.find({}).distinct("items")
 print(items)
 
-language = "Java"
+language = ["Java", "Ruby"]
+id = 3788366
 
 lang_database = client['true_lang']
 lang_collection = lang_database['true_lang_collection']
 lang_collection.delete_many({})#clean memory
 lang_collection.insert_many(items)
-task1 = lang_collection.find({'language': language}).limit(1000) #cursor - выборка
+task1 = lang_collection.find({'language': {'$in': language}}, {'id':1, 'name':1, 'language':1}) #cursor - выборка
 print("Java language")
 for ind in task1:
     print(ind)
@@ -50,7 +55,7 @@ def random_generator(lower, upper):
 
 @app.route("/")
 def last_number_list():
-    return render_template('index.html')
+    return render_template('index-basic.html')
 
     #return Response(json.dumps(extracted, default=json_util.default), status=200, mimetype='application/json')
     #last_numbers = list(random_numbers.find({"_id" : "lasts"}))
