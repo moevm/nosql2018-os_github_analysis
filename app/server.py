@@ -8,12 +8,11 @@ app = Flask(__name__)
 random_numbers = MongoClient('127.0.0.1', 27017).demo.random_numbers
 
 
-main_response = requests.get('https://api.github.com/search/repositories?&q=opensource&type=Repositories')
-# link = main_response.headers.get('link', None)
-# if link is not None:
-#     print(link)
+main_response = requests.get('https://api.github.com/search/repositories?&q=opensource&type=Repositories&per_page=100')
+
 main_file = main_response.json()
-print(main_file)
+# print(main_file)
+
 client = MongoClient('mongodb://localhost:27017/')
 database = client['repositories']
 collection = database['repositories_collection']
@@ -21,13 +20,15 @@ collection.delete_many({})# clean memory
 collection.insert_one(main_file)
 items = collection.find({}).distinct("items")
 print(items)
-
+for item in items:
+    collection.insert_one(item)
+docs = collection.find({})
 
 # speedfield.find({}).forEach(doc)
 # collection.update('$set': {'speed':sp})
-speed_database = client['speed_field']
-speed_collection = speed_database['speed_field_collection']
-speed_collection.delete_many({})
+# speed_database = client['speed_field']
+# speed_collection = speed_database['speed_field_collection']
+# speed_collection.delete_many({})
 
 
 language = ["Java", "Ruby"]
@@ -39,21 +40,17 @@ max_size = 10000
 max_speed = 200
 id = 3788366
 
-lang_database = client['true_lang']
-lang_collection = lang_database['true_lang_collection']
-lang_collection.delete_many({})#clean memory
-lang_collection.insert_many(items)
 
-
-created_at = lang_collection.distinct('created_at')
-print(created_at)
-updated_at = lang_collection.distinct('updated_at')
-print(updated_at)
-size = lang_collection.distinct('size')
-print(size)
-print("///////////speed///////////////")
-
-print(created_at[0])
+# calculating field speed
+created_at = collection.distinct('created_at')
+# print(created_at)
+updated_at = collection.distinct('updated_at')
+# print(updated_at)
+size = collection.distinct('size')
+# print(size)
+# print("///////////speed///////////////")
+#
+# print(created_at[0])
 year = ""
 first_date = []
 i = 0
@@ -72,10 +69,10 @@ for item in range(len(created_at)):
     date_created_at = int(year) * 360 + int(mon) * 30 + int(day)
     first_date.insert(i, date_created_at)
     i = i + 1
-    print(date_created_at)
-print(first_date)
+    # print(date_created_at)
+# print(first_date)
 
-print(updated_at[0])
+# print(updated_at[0])
 # year = ""
 second_date = []
 n = 0
@@ -90,19 +87,20 @@ for item in range(len(updated_at)):
     date_updated_at = int(year) * 360 + int(mon) * 30 + int(day)
     second_date.insert(n, date_updated_at)
     n = n + 1
-    print(date_updated_at)
-print(first_date)
+    # print(date_updated_at)
+# print(first_date)
 for item in range(len(created_at)):
-    lang_collection.update_one({
+    collection.update_one({
         'created_at': created_at[item],
         'updated_at': updated_at[item]},
         {'$set': {'speed': size[item]/(second_date[item] - first_date[item])}})
-sp = lang_collection.find({}, {'_id': 0, 'created_at': 1, 'updated_at': 1, 'size': 1, 'speed': 1})
-for sp_item in sp:
-    print(sp_item)
+sp = collection.find({}, {'_id': 0, 'created_at': 1, 'updated_at': 1, 'size': 1, 'speed': 1})
+# for sp_item in sp:
+#     print(sp_item)
 
 
-task1 = lang_collection.find({'language': {'$in': language},
+
+task1 = collection.find({'language': {'$in': language},
                               'forks': {'$lte': max_forks_count},
                               'stargazers_count': {'$lte': max_star},
                               'size': {'$lte': max_size},
@@ -114,13 +112,26 @@ task1 = lang_collection.find({'language': {'$in': language},
                               'stargazers_count': 1,
                               'size': 1,
                               'speed': 1}) #cursor - выборка
-print("Java language")
+print("My cursor")
 for ind in task1:
     print(ind)
 
-
-
-
+# # count of commits
+# commits_url = task1.distinct('commits_url')#array of commits_url
+# print(commits_url)
+# commits_file = ''
+# com_url = ''
+# for u in range(len(commits_url[0]) - 6):
+#     com_url = str(com_url) + str(commits_url[0][u])
+# commits_response = requests.get(com_url)
+# commits_file = commits_response.json()
+# print(commits_file)
+# com_database = client['commits']
+# com_collection = com_database['commits_collection']
+# com_collection.delete_many({})# clean memory
+# com_collection.insert_one(commits_file)
+# commits = collection.find({}).count()
+# print(commits)
 # for item in forks:
 #     sp = lang_collection.aggregate([{'$project': {'speed': {'$subtract': [forks[0], 0]}}}])
 #     for sp_item in sp:
