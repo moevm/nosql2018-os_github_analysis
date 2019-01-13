@@ -159,6 +159,10 @@ def random_generator(lower, upper):
 @app.route("/")
 def last_number_list():
     return render_template('index-basic.html')
+	
+@app.route("/step2")
+def step2():
+    return render_template('index-basic2.html')
 
     #return Response(json.dumps(extracted, default=json_util.default), status=200, mimetype='application/json')
     #last_numbers = list(random_numbers.find({"_id" : "lasts"}))

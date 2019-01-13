@@ -3,23 +3,19 @@
     
     <head>
         <meta charset="utf-8">
-        <title>PЛЧ</title>	
+        <title>PЛЧ</title>
+
+		
         <!-- ============== Resource style ============== -->
-		<link rel="stylesheet" href="assets/css/main.css">
+		<link rel="stylesheet" href="/static/assets/css/main.css">
 
 		<!-- Modernizr runs quickly on page load to detect features -->
-		<script src="assets/js/modernizr.js"></script>
+		<script src="/static/assets/js/modernizr.js"></script>
     </head>
 
 	<body>
 
-		<div class="loading-part">
-			<div class="loader-home">Loading...</div>
-		</div>
-
 		<div id="wrapper">
-
-			<div class="lines-overlay"></div>
 
 			<div id="main">
 			     
@@ -69,19 +65,30 @@
 					<nav>
 						<ul>
 							<li>
-								 <a href="index-basic2.html">
-								<button type="button" class="btn btn-info btn-lg" aria-pressed="index-basic2.html">Загрузить из гита</button></a>
+								 <a href="dataRep">
+								<button type="button" class="btn btn-primary offset-8 btn-lg" aria-pressed="dataRep">Загрузить из гита</button></a>
 							</li>
 
+							
+							
 							<li>
 							    <a href="#">
-							    <button type="button" class="btn btn-info btn-lg" onclick="document.getElementById('fileInput').click();">Загрузить из файла</button></a>
+							    <button type="button" class="btn btn-primary offset-8 btn-lg" onclick="document.getElementById('fileInput').click();">Загрузить из файла</button></a>
 							</li>
 							
 							<p id="fileName"></p>
 						
                             <input type = "file" id="fileInput" style="display:none;"  onchange="fileSelected(this)">
 							
+						</ul>
+					</nav>
+					
+					<nav>
+						<ul>
+							<li>
+								 <a href="/step2">
+								<button type="button" class="btn btn-primary offset-8 btn-lg" aria-pressed="/step2">Перейти далее</button></a>
+							</li>	
 						</ul>
 					</nav>
 				</header>
@@ -100,17 +107,17 @@
         <!-- \\\\\\\\\\\\\\\\\\\/////////////////// -->
 
 		<!-- * Libraries jQuery and Bootstrap - Be careful to not remove them * -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/bootstrap.min.js"></script>
+		<script src="/static/assets/js/jquery.min.js"></script>
+		<script src="/static/assets/js/bootstrap.min.js"></script>
 
 		<!-- Swipebox plugin -->
-		<script src="assets/js/jquery.swipebox.js"></script>
+		<script src="/static/assets/js/jquery.swipebox.js"></script>
 
 		<!-- Constellation effect -->
-        <script src="assets/js/constellation.js"></script>
+        <script src="/static/assets/js/constellation.js"></script>
 
 		<!-- Background plugin -->
-		<script src="assets/js/vegas.js"></script>
+		<script src="/static/assets/js/vegas.js"></script>
 
 		<!-- Background settings -->
 		<script>
@@ -121,14 +128,35 @@
 			
 		    $('body').vegas({
 		        slides: [
-		            { src: 'assets/img/pic1.jpg' }
+		            { src: '/static/assets/img/pic1.jpg' }
 		        ]
 		    });
 
 		</script>
 
+		<script>
+
+        jQuery(document).ready(function($){
+
+         $('.btn-primary').click(function(){
+
+         var dataRep = $('#queryTexte').val();
+
+            $.get( "http://localhost:5000?query="+dataRep, function( data ) {
+                     $('#div2').empty();
+                     ..............
+                     $('#div2').append("</table>");
+            }, "json")
+            .fail(function() {
+               $("#rep")
+                   .append('<br/><p style="color:red">Oops! Error with XMLHttpRequest</p>')
+            });
+        });
+    });
+</script>
+		
 		<!-- Main JS -->
-		<script src="assets/js/main.js"></script>
+		<script src="/static/assets/js/main.js"></script>
 
 	</body>
 </html>

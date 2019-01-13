@@ -4,23 +4,19 @@
     <head>
         <meta charset="utf-8">
         <title>PЛЧ</title>
+
+		
         <!-- ============== Resource style ============== -->
-		<link rel="stylesheet" href="assets/css/main.css">
+		<link rel="stylesheet" href="/static/assets/css/main.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.3.4/css/bootstrap-slider.css">
 
 		<!-- Modernizr runs quickly on page load to detect features -->
-		<script src="assets/js/modernizr.js"></script>
+		<script src="/static/assets/js/modernizr.js"></script>
     </head>
 
 	<body>
 
-		<div class="loading-part">
-			<div class="loader-home">Loading...</div>
-		</div>
-
 		<div id="wrapper">
-
-			<div class="lines-overlay"></div>
 
 			<div id="main">
 			     
@@ -102,21 +98,145 @@
 					<nav>
 						<ul>
 							<li>
-							    <a href="#">
-							    <button type="button" class="btn btn-info btn-lg" onclick="">Что вышло то</button></a>
+							    <a href="index-basic3.html">
+							    <button type="button" class="btn btn-primary offset-8 btn-lg" aria-pressed="index-basic3.html">Что вышло то</button></a>
 							</li>
 							
 							<li>
 							    <a href="index-basic2.html">
-							    <button type="button" class="btn btn-info btn-lg" href="index-basic2.html">Выгрузить в файл</button></a>
+							    <button type="button" class="btn btn-primary offset-8 btn-lg" href="index-basic2.html">Выгрузить в файл</button></a>
 							</li>
 						</ul>
 					</nav>
 					
 					
+					
 				</header>
-
+				
+			<section class="flat-row mail-chimp2">
+			            <div class="container">
+				            <div class="row">
+					          <div class="col-sm-3">
+						       <div class="text"><h4>Люди</h4></div>
+							   </div>
+							   
+							   <div class="col-sm-3">
+							
+							   <!-- BAR CHART -->
+                             <div class="box box-success">
+                                
+                                  <div class="box-body">
+                                      <div class="chart">
+                                          <canvas id="peopleChart" height="500" width="500"></canvas>
+                                     </div>
+                                  </div>
+                                    <!-- /.box-body -->
+                             </div>
+                             <!-- /.box -->
+		                     </div>
+							  
+				            </div>
+			            </div>
+		            </section>
+					
+					<section class="flat-row mail-chimp2">
+			            <div class="container">
+				            <div class="row">
+					          <div class="col-sm-3">
+						       <div class="text"><h4>Скорость</h4></div>
+					          </div>
+							   <div class="col-sm-3">
+                               <!-- LINE CHART -->
+                               
+                                    <div class="box-header with-border">     
+                                         <div class="box-body">
+                                             <div class="chart">
+                                              <canvas id="speedChart" height="500" width="500"></canvas>
+                                             </div>
+                                         </div>
+                                          <!-- /.box-body -->
+                                    </div>
+                                        <!-- /.box -->
+                             <!-- /.box -->
+							   </div>
+				            </div>
+			            </div>
+		            </section>
+					
+					<section class="flat-row mail-chimp2">
+			            <div class="container">
+				            <div class="row">
+					          <div class="col-sm-3">
+						       <div class="text"><h4>Звездочки</h4></div>
+					          </div>
+							  <div class="col-sm-3">
+							  <!-- BAR CHART -->
+                             <div class="box box-success">
+                                
+                                  <div class="box-body">
+                                       <div class="chart">
+                                             <canvas id="starsChart" height="500" width="500""></canvas>
+                                        </div>
+                                  </div>
+                                    <!-- /.box-body -->
+                             </div>
+                             <!-- /.box -->
+							   </div>
+				            </div>
+			            </div>
+		            </section>
+					
+					<section class="flat-row mail-chimp2">
+			            <div class="container">
+				            <div class="row">
+					          <div class="col-sm-3">
+						       <div class="text"><h4>Коммиты</h4></div>
+					          </div>
+							  <div class="col-sm-3">
+							   <!-- LINE CHART -->
+                               
+                                    <div class="box-header with-border">     
+                                         <div class="box-body">
+                                             <div class="chart">
+                                              <canvas id="commitsChart" height="500" width="500"></canvas>
+                                             </div>
+                                         </div>
+                                          <!-- /.box-body -->
+                                    </div>
+                                        <!-- /.box -->
+                             <!-- /.box -->
+							   </div>
+				            </div>
+			            </div>
+		            </section>
+					
+					<section class="flat-row mail-chimp2">
+			            <div class="container">
+				            <div class="row">
+					          <div class="col-sm-3">
+						       <div class="text"><h4>Форки</h4></div>
+					          </div>
+							  <div class="col-sm-3">
+							      <!-- LINE CHART -->
+                               
+                                    <div class="box-header with-border">     
+                                         <div class="box-body">
+                                             <div class="chart">
+                                              <canvas id="forksChart" height="500" width="500"></canvas>
+                                             </div>
+                                         </div>
+                                          <!-- /.box-body -->
+                                    </div>
+                                        <!-- /.box -->
+                             <!-- /.box -->
+							   </div>
+				            </div>
+			            </div>
+		            </section>
+				
 			</div>
+			
+
 
 		</div>
 
@@ -130,23 +250,23 @@
         <!-- \\\\\\\\\\\\\\\\\\\/////////////////// -->
 
 		<!-- * Libraries jQuery and Bootstrap - Be careful to not remove them * -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/bootstrap.min.js"></script>
+		<script src="/static/assets/js/jquery.min.js"></script>
+		<script src="/static/assets/js/bootstrap.min.js"></script>
 		
 		<!-- Swipebox plugin -->
-		<script src="assets/js/jquery.swipebox.js"></script>
+		<script src="/static/assets/js/jquery.swipebox.js"></script>
 
 		<!-- Constellation effect -->
-        <script src="assets/js/constellation.js"></script>
+        <script src="/static/assets/js/constellation.js"></script>
 
 		<!-- Background plugin -->
-		<script src="assets/js/vegas.js"></script>
+		<script src="/static/assets/js/vegas.js"></script>
 		
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.3.4/bootstrap-slider.js"></script>
 
 		<!-- Background settings -->
-           <script>
+        <script>
            //$('input[type="range"]').rangeslider();
 		   $(document).ready(function(){
 			 $(".min-max-range").slider({});
@@ -157,14 +277,360 @@
 
 		    $('body').vegas({
 		        slides: [
-		            { src: 'assets/img/pic1.jpg' }
+		            { src: '/static/assets/img/pic1.jpg' }
 		        ]
 		    });
 
 		</script>
+		
+		<script src="/static/assets/js/Chart.js"></script>
+<!-- page script -->
+<script>
+  $(function () {
+  var areaPeopleData = {
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label               : 'Electronics',
+          fillColor           : 'rgba(210, 214, 222, 1)',
+          strokeColor         : 'rgba(210, 214, 222, 1)',
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+          label               : 'Digital Goods',
+          fillColor           : 'rgba(60,141,188,0.9)',
+          strokeColor         : 'rgba(60,141,188,0.8)',
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [28, 48, 40, 19, 86, 27, 90]
+        }
+      ]
+    }
+	
+	  var areaSpeedData = {
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label               : 'Electronics',
+          fillColor           : 'rgba(210, 214, 222, 1)',
+          strokeColor         : 'rgba(210, 214, 222, 1)',
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+          label               : 'Digital Goods',
+          fillColor           : 'rgba(60,141,188,0.9)',
+          strokeColor         : 'rgba(60,141,188,0.8)',
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [28, 48, 40, 19, 86, 27, 90]
+        }
+      ]
+    }
+	
+	  var areaStarsData = {
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label               : 'Electronics',
+          fillColor           : 'rgba(210, 214, 222, 1)',
+          strokeColor         : 'rgba(210, 214, 222, 1)',
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+          label               : 'Digital Goods',
+          fillColor           : 'rgba(60,141,188,0.9)',
+          strokeColor         : 'rgba(60,141,188,0.8)',
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [28, 48, 40, 19, 86, 27, 90]
+        }
+      ]
+    }
+	
+	  var areaCommitsData = {
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label               : 'Electronics',
+          fillColor           : 'rgba(210, 214, 222, 1)',
+          strokeColor         : 'rgba(210, 214, 222, 1)',
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+          label               : 'Digital Goods',
+          fillColor           : 'rgba(60,141,188,0.9)',
+          strokeColor         : 'rgba(60,141,188,0.8)',
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [28, 48, 40, 19, 86, 27, 90]
+        }
+      ]
+    }
+	
+	  var areaForksData = {
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label               : 'Electronics',
+          fillColor           : 'rgba(210, 214, 222, 1)',
+          strokeColor         : 'rgba(210, 214, 222, 1)',
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+          label               : 'Digital Goods',
+          fillColor           : 'rgba(60,141,188,0.9)',
+          strokeColor         : 'rgba(60,141,188,0.8)',
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [28, 48, 40, 19, 86, 27, 90]
+        }
+      ]
+    }
+	
+    //-------------
+    //- BAR CHART -
+    //-------------
+    var peopleCanvas                   = $('#peopleChart').get(0).getContext('2d')
+	
+	var barChart                         = new Chart(peopleCanvas)
+    var barChartData                     = areaPeopleData
+    barChartData.datasets[1].fillColor   = '#00a65a'
+    barChartData.datasets[1].strokeColor = '#00a65a'
+    barChartData.datasets[1].pointColor  = '#00a65a'
+    var barChartOptions                  = {
+      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+      scaleBeginAtZero        : true,
+      //Boolean - Whether grid lines are shown across the chart
+      scaleShowGridLines      : true,
+      //String - Colour of the grid lines
+      scaleGridLineColor      : 'rgba(0,0,0,.05)',
+      //Number - Width of the grid lines
+      scaleGridLineWidth      : 1,
+      //Boolean - Whether to show horizontal lines (except X axis)
+      scaleShowHorizontalLines: true,
+      //Boolean - Whether to show vertical lines (except Y axis)
+      scaleShowVerticalLines  : true,
+      //Boolean - If there is a stroke on each bar
+      barShowStroke           : true,
+      //Number - Pixel width of the bar stroke
+      barStrokeWidth          : 2,
+      //Number - Spacing between each of the X value sets
+      barValueSpacing         : 5,
+      //Number - Spacing between data sets within X values
+      barDatasetSpacing       : 1,
+      //String - A legend template
+      legendTemplate          : '',
+      //Boolean - whether to make the chart responsive
+      responsive              : true,
+      maintainAspectRatio     : true
+    }
+
+    barChartOptions.datasetFill = false
+    barChart.Bar(barChartData, barChartOptions)
+	
+	
+	
+	
+	
+	
+	
+	var starsCanvas                   = $('#starsChart').get(0).getContext('2d')
+	
+	var barChart                         = new Chart(starsCanvas)
+    var barChartData                     = areaStarsData
+    barChartData.datasets[1].fillColor   = '#00a65a'
+    barChartData.datasets[1].strokeColor = '#00a65a'
+    barChartData.datasets[1].pointColor  = '#00a65a'
+    var barChartOptions                  = {
+      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+      scaleBeginAtZero        : true,
+      //Boolean - Whether grid lines are shown across the chart
+      scaleShowGridLines      : true,
+      //String - Colour of the grid lines
+      scaleGridLineColor      : 'rgba(0,0,0,.05)',
+      //Number - Width of the grid lines
+      scaleGridLineWidth      : 1,
+      //Boolean - Whether to show horizontal lines (except X axis)
+      scaleShowHorizontalLines: true,
+      //Boolean - Whether to show vertical lines (except Y axis)
+      scaleShowVerticalLines  : true,
+      //Boolean - If there is a stroke on each bar
+      barShowStroke           : true,
+      //Number - Pixel width of the bar stroke
+      barStrokeWidth          : 2,
+      //Number - Spacing between each of the X value sets
+      barValueSpacing         : 5,
+      //Number - Spacing between data sets within X values
+      barDatasetSpacing       : 1,
+      //String - A legend template
+      legendTemplate          : '',
+      //Boolean - whether to make the chart responsive
+      responsive              : true,
+      maintainAspectRatio     : true
+    }
+
+    barChartOptions.datasetFill = false
+    barChart.Bar(barChartData, barChartOptions)
+	
+	
+	
+	
+	
+	
+	var speedCanvas                   = $('#speedChart').get(0).getContext('2d')
+	
+	var barChart                         = new Chart(speedCanvas)
+    var barChartData                     = areaSpeedData
+    barChartData.datasets[1].fillColor   = '#00a65a'
+    barChartData.datasets[1].strokeColor = '#00a65a'
+    barChartData.datasets[1].pointColor  = '#00a65a'
+    var barChartOptions                  = {
+      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+      scaleBeginAtZero        : true,
+      //Boolean - Whether grid lines are shown across the chart
+      scaleShowGridLines      : true,
+      //String - Colour of the grid lines
+      scaleGridLineColor      : 'rgba(0,0,0,.05)',
+      //Number - Width of the grid lines
+      scaleGridLineWidth      : 1,
+      //Boolean - Whether to show horizontal lines (except X axis)
+      scaleShowHorizontalLines: true,
+      //Boolean - Whether to show vertical lines (except Y axis)
+      scaleShowVerticalLines  : true,
+      //Boolean - If there is a stroke on each bar
+      barShowStroke           : true,
+      //Number - Pixel width of the bar stroke
+      barStrokeWidth          : 2,
+      //Number - Spacing between each of the X value sets
+      barValueSpacing         : 5,
+      //Number - Spacing between data sets within X values
+      barDatasetSpacing       : 1,
+      //String - A legend template
+      legendTemplate          : '',
+      //Boolean - whether to make the chart responsive
+      responsive              : true,
+      maintainAspectRatio     : true
+    }
+
+    barChartOptions.datasetFill = false
+    barChart.Bar(barChartData, barChartOptions)
+	
+	
+	
+	var commitsCanvas                   = $('#commitsChart').get(0).getContext('2d')
+	
+	var barChart                         = new Chart(commitsCanvas)
+    var barChartData                     = areaCommitsData
+    barChartData.datasets[1].fillColor   = '#00a65a'
+    barChartData.datasets[1].strokeColor = '#00a65a'
+    barChartData.datasets[1].pointColor  = '#00a65a'
+    var barChartOptions                  = {
+      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+      scaleBeginAtZero        : true,
+      //Boolean - Whether grid lines are shown across the chart
+      scaleShowGridLines      : true,
+      //String - Colour of the grid lines
+      scaleGridLineColor      : 'rgba(0,0,0,.05)',
+      //Number - Width of the grid lines
+      scaleGridLineWidth      : 1,
+      //Boolean - Whether to show horizontal lines (except X axis)
+      scaleShowHorizontalLines: true,
+      //Boolean - Whether to show vertical lines (except Y axis)
+      scaleShowVerticalLines  : true,
+      //Boolean - If there is a stroke on each bar
+      barShowStroke           : true,
+      //Number - Pixel width of the bar stroke
+      barStrokeWidth          : 2,
+      //Number - Spacing between each of the X value sets
+      barValueSpacing         : 5,
+      //Number - Spacing between data sets within X values
+      barDatasetSpacing       : 1,
+      //String - A legend template
+      legendTemplate          : '',
+      //Boolean - whether to make the chart responsive
+      responsive              : true,
+      maintainAspectRatio     : true
+    }
+
+    barChartOptions.datasetFill = false
+    barChart.Bar(barChartData, barChartOptions)
+	
+	
+	var forksCanvas                   = $('#forksChart').get(0).getContext('2d')
+	
+	
+    var barChart                         = new Chart(forksCanvas)
+    var barChartData                     = areaForksData
+    barChartData.datasets[1].fillColor   = '#00a65a'
+    barChartData.datasets[1].strokeColor = '#00a65a'
+    barChartData.datasets[1].pointColor  = '#00a65a'
+    var barChartOptions                  = {
+      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+      scaleBeginAtZero        : true,
+      //Boolean - Whether grid lines are shown across the chart
+      scaleShowGridLines      : true,
+      //String - Colour of the grid lines
+      scaleGridLineColor      : 'rgba(0,0,0,.05)',
+      //Number - Width of the grid lines
+      scaleGridLineWidth      : 1,
+      //Boolean - Whether to show horizontal lines (except X axis)
+      scaleShowHorizontalLines: true,
+      //Boolean - Whether to show vertical lines (except Y axis)
+      scaleShowVerticalLines  : true,
+      //Boolean - If there is a stroke on each bar
+      barShowStroke           : true,
+      //Number - Pixel width of the bar stroke
+      barStrokeWidth          : 2,
+      //Number - Spacing between each of the X value sets
+      barValueSpacing         : 5,
+      //Number - Spacing between data sets within X values
+      barDatasetSpacing       : 1,
+      //String - A legend template
+      legendTemplate          : '',
+      //Boolean - whether to make the chart responsive
+      responsive              : true,
+      maintainAspectRatio     : true
+    }
+
+    barChartOptions.datasetFill = false
+    barChart.Bar(barChartData, barChartOptions)
+
+  })
+</script>
+
 
 		<!-- Main JS -->
-		<script src="assets/js/main.js"></script>
+		<script src="/static/assets/js/main.js"></script>
 
 	</body>
 </html>
