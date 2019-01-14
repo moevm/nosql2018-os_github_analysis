@@ -1,12 +1,13 @@
 import random, os, requests, json, datetime, time
 
-from flask import Flask, Response, render_template
+from flask import Flask, Response, render_template, url_for, request, jsonify
 from pymongo import MongoClient
 from bson import json_util
 
 app = Flask(__name__)
 random_numbers = MongoClient('127.0.0.1', 27017).demo.random_numbers
 
+#         АНЯ смотри сразу строчку 139
 
 main_response = requests.get('https://api.github.com/search/repositories?&q=opensource&type=Repositories&per_page=100')
 
@@ -31,7 +32,7 @@ docs = collection.find({})
 # speed_collection.delete_many({})
 
 
-language = ["Java", "Ruby"]
+language = ["Ruby"]
 max_forks_count = 187
 max_commits = 541
 max_star = 376
@@ -39,7 +40,6 @@ max_contributors = 100
 max_size = 10000
 max_speed = 200
 id = 3788366
-
 
 # calculating field speed
 created_at = collection.distinct('created_at')
@@ -100,60 +100,155 @@ sp = collection.find({}, {'_id': 0, 'created_at': 1, 'updated_at': 1, 'size': 1,
 
 
 
-task1 = collection.find({'language': {'$in': language},
-                              'forks': {'$lte': max_forks_count},
-                              'stargazers_count': {'$lte': max_star},
-                              'size': {'$lte': max_size},
-                              'speed': {'$lte': max_speed}},
-                             {'id': 1,
-                              'name': 1,
-                              'language': 1,
-                              'forks': 1,
-                              'stargazers_count': 1,
-                              'size': 1,
-                              'speed': 1}) #cursor - выборка
-print("My cursor")
-for ind in task1:
-    print(ind)
-
-# # count of commits
-# commits_url = task1.distinct('commits_url')#array of commits_url
-# print(commits_url)
-# commits_file = ''
-# com_url = ''
-# for u in range(len(commits_url[0]) - 6):
-#     com_url = str(com_url) + str(commits_url[0][u])
-# commits_response = requests.get(com_url)
-# commits_file = commits_response.json()
-# print(commits_file)
-# com_database = client['commits']
-# com_collection = com_database['commits_collection']
-# com_collection.delete_many({})# clean memory
-# com_collection.insert_one(commits_file)
-# commits = collection.find({}).count()
-# print(commits)
-# for item in forks:
-#     sp = lang_collection.aggregate([{'$project': {'speed': {'$subtract': [forks[0], 0]}}}])
-#     for sp_item in sp:
-#         print(sp_item)
-
-
 @app.route("/add/<int:lower>/<int:upper>")
 def random_generator(lower, upper):
     number = str(random.randint(lower, upper))
     random_numbers.update(
-        {"_id" : "lasts"},
-        {"$push" : {
-            "items" : {
-                "$each": [{"value" : number, "date": datetime.datetime.utcnow()}],
-                "$sort" : {"date" : -1},
-                "$slice" : 5
+        {"_id": "lasts"},
+        {"$push": {
+            "items": {
+                "$each": [{"value": number, "date": datetime.datetime.utcnow()}],
+                "$sort": {"date": -1},
+                "$slice": 5
             }
         }},
         upsert=True
     )
 
     return Response(number, status=200, mimetype='application/json')
+
+# @app.route("/init/<string:languages>")
+# def languages_list(languages):
+#     # lang_response = requests.get('http://127.0.0.1:5000/init?language[]=Ruby')
+#     # print(lang_response)
+#     init_language = [languages]
+#     print(init_language)
+#     lang_task = collection.find({'language': {'$in': init_language}})
+#     print("My init cursor")
+#     for index in lang_task:
+#         print(index)
+#     lang_file = json.dumps({'success':'true'})
+#     # response = app.response_class(
+#     #     response=json.dumps({'success':'true'}),
+#     #     status=200,
+#     #     mimetype='application/json'
+#     # )
+#     # print(response)
+#     return Response(lang_file, status=200, mimetype='application/json')
+
+#на этот метод должен прийти массив languages[] (выбранные пользователем языки)
+#что здесь происходит: я делаю выборку из изначальной коллекции по языкам, которые пришли от тебя
+#переходя по адресу http://127.0.0.1:5000/init?languages[]=Ruby&languages[]=Java произойдёт фильтрация по языкам java и ruby
+#на выходе json об успешном выполнении
+@app.route("/init", methods=['GET'])
+def languages_list():
+    languages = request.args.getlist('languages[]')
+    print(languages)
+    init_database = client.repositories
+    init_collection = init_database.repositories_collection
+    lang_task = init_collection.find({'language': {'$in': languages}, }, {'_id': 0, 'id': 1,
+                              'name': 1,
+                              'language': 1,
+                              'forks': 1,
+                              'stargazers_count': 1,
+                              'size': 1,
+                              'speed': 1})
+
+    # print("My init cursor")
+    # for index in lang_task:
+    #     print(index)
+
+    init_db = client['init_languages']
+    init_col = init_db['languages_collection']
+    init_col.delete_many({})  # clean memory
+    for index in lang_task:
+        init_col.insert_one(index)
+        print(index)
+    print(init_col)
+    for init_ind in init_col.find({}):
+        print(init_ind)
+
+    lang_file = json.dumps({'languages': languages, 'success': 'true'})
+
+    return Response(lang_file, status=200, mimetype='application/json')
+
+#сюда должны прийти параметры фильтрации forksFrom, forksTo и тд
+#переходя по адресу http://127.0.0.1:5000/list?forksTo=34&starsFrom=0&starsTo=200&sizeFrom=0&sizeTo=5000&speedFrom=0&speedTo=7
+#произойдёт фильтрация
+#возвращает json с конечной выборкой значения которой нужно вывести на графики
+@app.route("/list", methods = ['GET'])
+def filter_list():
+
+    forksFrom = request.args.get('forksFrom')
+    if forksFrom is None:
+        forksFrom=0
+    forksFrom = int(forksFrom)
+
+    forksTo = request.args.get('forksTo')
+    if forksTo is None:
+        forksTo=9999999
+    forksTo = int(forksTo)
+
+    starsFrom = request.args.get('starsFrom')
+    if starsFrom is None:
+        starsFrom=0
+    starsFrom = int(starsFrom)
+
+    starsTo = request.args.get('starsTo')
+    if starsTo is None:
+        starsTo=9999999
+    starsTo = int(starsTo)
+
+    sizeFrom = request.args.get('sizeFrom')
+    if sizeFrom is None:
+        sizeFrom=0
+    sizeFrom = int(sizeFrom)
+
+    sizeTo = request.args.get('sizeTo')
+    if sizeTo is None:
+        sizeTo=9999999
+    sizeTo = int(sizeTo)
+
+    speedFrom = request.args.get('speedFrom')
+    if speedFrom is None:
+        speedFrom=0
+    speedFrom = int(speedFrom)
+
+    speedTo = request.args.get('speedTo')
+    if speedTo is None:
+        speedTo=9999999
+    speedTo = int(speedTo)
+
+    list_database = client.init_languages
+    list_collection = list_database.languages_collection
+    # for each in list_collection.find({}):
+    #     print(each)
+    filter_task = list_collection.find({'forks': {'$gte': forksFrom, '$lte': forksTo},
+                                        'stargazers_count': {'$gte': starsFrom, '$lte': starsTo},
+                                        'size': {'$gte': sizeFrom, '$lte': sizeTo},
+                                        'speed': {'$gte': speedFrom, '$lte': speedTo}},
+                                       {'_id': 0, 'id': 1,
+                                        'name': 1,
+                                        'language': 1,
+                                        'forks': 1,
+                                        'stargazers_count': 1,#звёзды
+                                        'size': 1,
+                                        'speed': 1})
+# тебе нужно видимо из каждого документа брать значения таких полей как
+# 'forks', 'stargazers_count', 'size', 'speed' - четыре графика и 'language'-язык
+
+    # json_docs = []
+    # for doc in filter_task:
+    #     print(doc)
+    #     json_doc = json.dumps(doc, default=json_util.default)
+    #     json_docs.append(json_doc)
+
+
+    json_docs = []
+    for doc in filter_task:
+        json_docs.append(doc)
+
+    return jsonify({"data": json_docs})
 
 
 @app.route("/")
@@ -168,7 +263,10 @@ def step2():
     #last_numbers = list(random_numbers.find({"_id" : "lasts"}))
     #extracted = [d['value'] for d in last_numbers[0]['items']]
 
+
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.config['DEBUG'] = True
     app.run(host='127.0.0.1', port=port)
+
