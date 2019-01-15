@@ -12,6 +12,15 @@
 
 		<!-- Modernizr runs quickly on page load to detect features -->
 		<script src="/static/assets/js/modernizr.js"></script>
+		
+		
+		<style>
+			.slider-horizontal {
+				margin-left: 10px;
+				margin-right: 10px;
+			}
+		
+		</style>
     </head>
 
 	<body>
@@ -29,20 +38,7 @@
 					
 					<h2>Можем применить фильтры</h2>
 					
-					<section class="flat-row mail-chimp">
-			            <div class="container">
-				            <div class="row">
-					          <div class="col-sm-3">
-						       <div class="text"><h4>Люди</h4></div>
-							   </div>
-							   
-							   <div class="col-sm-4">
-							   0    <input class="min-max-range span2" type="text" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]"/>   1000
-					          </div>
-				            </div>
-			            </div>
-		            </section>
-					
+					<form id="filter-form">
 					<section class="flat-row mail-chimp">
 			            <div class="container">
 				            <div class="row">
@@ -50,7 +46,7 @@
 						       <div class="text"><h4>Скорость</h4></div>
 					          </div>
 							  <div class="col-sm-4">
-							   0    <input class="min-max-range span2" type="text" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]"/>   1000
+							   <input class="min-max-range span2" id="sliderSpeed" type="text" name="speed"/>
 					          </div>
 				            </div>
 			            </div>
@@ -63,7 +59,7 @@
 						       <div class="text"><h4>Звездочки</h4></div>
 					          </div>
 							  <div class="col-sm-4">
-							   0    <input class="min-max-range span2" type="text" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]"/>   1000
+							   <input class="min-max-range span2" id="sliderStars" type="text" name="stars"/>
 					          </div>
 				            </div>
 			            </div>
@@ -73,10 +69,10 @@
 			            <div class="container">
 				            <div class="row">
 					          <div class="col-sm-3">
-						       <div class="text"><h4>Коммиты</h4></div>
+						       <div class="text"><h4>Строки</h4></div>
 					          </div>
 							  <div class="col-sm-4">
-							   0    <input class="min-max-range span2" type="text" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]"/>   1000
+							   <input class="min-max-range span2" id="sliderCommits" type="text" name="commits"/>
 					          </div>
 				            </div>
 			            </div>
@@ -89,16 +85,16 @@
 						       <div class="text"><h4>Форки</h4></div>
 					          </div>
 							  <div class="col-sm-4">
-							   0    <input class="min-max-range span2" type="text" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]"/>   1000
+							   <input class="min-max-range span2" id="sliderForks" type="text" name="forks"/>
 					          </div>
 				            </div>
 			            </div>
 		            </section>
-					
+					</form>
 					<nav>
 						<ul>
 							<li>
-							    <a href="index-basic3.html">
+							    <a href="#" id="filter-action">
 							    <button type="button" class="btn btn-primary offset-8 btn-lg" aria-pressed="index-basic3.html">Что вышло то</button></a>
 							</li>
 							
@@ -113,33 +109,7 @@
 					
 				</header>
 				
-			<section class="flat-row mail-chimp2">
-			            <div class="container">
-				            <div class="row">
-					          <div class="col-sm-3">
-						       <div class="text"><h4>Люди</h4></div>
-							   </div>
-							   
-							   <div class="col-sm-3">
-							
-							   <!-- BAR CHART -->
-                             <div class="box box-success">
-                                
-                                  <div class="box-body">
-                                      <div class="chart">
-                                          <canvas id="peopleChart" height="500" width="500"></canvas>
-                                     </div>
-                                  </div>
-                                    <!-- /.box-body -->
-                             </div>
-                             <!-- /.box -->
-		                     </div>
-							  
-				            </div>
-			            </div>
-		            </section>
-					
-					<section class="flat-row mail-chimp2">
+			        <section class="flat-row mail-chimp2">
 			            <div class="container">
 				            <div class="row">
 					          <div class="col-sm-3">
@@ -190,7 +160,7 @@
 			            <div class="container">
 				            <div class="row">
 					          <div class="col-sm-3">
-						       <div class="text"><h4>Коммиты</h4></div>
+						       <div class="text"><h4>Количество строк</h4></div>
 					          </div>
 							  <div class="col-sm-3">
 							   <!-- LINE CHART -->
@@ -269,7 +239,7 @@
         <script>
            //$('input[type="range"]').rangeslider();
 		   $(document).ready(function(){
-			 $(".min-max-range").slider({});
+			 
 		   });
         </script>
 		
@@ -286,133 +256,217 @@
 		<script src="/static/assets/js/Chart.js"></script>
 <!-- page script -->
 <script>
-  $(function () {
-  var areaPeopleData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+
+	  var sliderSpeed = new Slider("#sliderSpeed", { id: "sliderSpeed", min: 0, max: 50000, range: true, value: [0, 50000], tooltip: "always" });
+	  var sliderStars = new Slider("#sliderStars", { id: "sliderStars", min: 0, max: 50000, range: true, value: [0, 50000], tooltip: "always" });
+	  var sliderCommits = new Slider("#sliderCommits", { id: "sliderCommits", min: 0, max: 50000, range: true, value: [0, 50000], tooltip: "always" });
+	  var sliderForks = new Slider("#sliderForks", { id: "sliderForks", min: 0, max: 50000, range: true, value: [0, 50000], tooltip: "always" });
+	  
+	  
+		var starsCanvas                   = $('#starsChart').get(0).getContext('2d');
+		var forksCanvas                   = $('#forksChart').get(0).getContext('2d');
+		var speedCanvas                   = $('#speedChart').get(0).getContext('2d');
+		var commitsCanvas                 = $('#commitsChart').get(0).getContext('2d')
+
+		var barChart1                         = new Chart(starsCanvas);
+		var barChart2                         = new Chart(speedCanvas);
+		var barChart3                         = new Chart(commitsCanvas);
+		var barChart4                         = new Chart(forksCanvas);
+	  
+	  var filterMax = 0;
+
+		function filterData(){
+			var speed_data  = $('input[name=speed]').val().split(",");
+			var stars_data  = $('input[name=stars]').val().split(",");
+			var commits_data  = $('input[name=commits]').val().split(",");
+			var forks_data  = $('input[name=forks]').val().split(",");
+						
+			var url = "http://localhost:5000/list?speedFrom="+speed_data[0]+'&speedTo='+speed_data[1]+'&starsFrom='+stars_data[0]+'&starsTo='+stars_data[1]+'&sizeFrom='+commits_data[0]+'&sizeTo='+commits_data[1]+'&forksFrom='+forks_data[0]+'&forksTo='+forks_data[1];
+			$.get( url, function( data ) {
+				showData(data);
+			}, "json")
+			.fail(function() {
+			   alert("API error");
+			});	
+			
+			
+		}
+		
+		function showData(data) {
+		
+			if (filterMax) {
+				if (barChart1) {
+					barChart1.destroy();
+				}
+			
+				if (barChart2) {
+					barChart2.destroy();
+				}
+				
+				if (barChart3) {
+					barChart3.destroy();
+				}
+				
+				if (barChart4) {
+					barChart4.destroy();
+				}
+			}
+			
+		
+			var dataSpeed = {};
+			var dataStars = {};
+			var dataCommits = {};
+			var dataForks = {};
+			
+			var dataCount = {};
+			
+			var dataMax = {"speed": 0, "forks": 0, "stars": 0, "commits": 0};
+		
+		
+			jQuery.each( data.data, function( i, val ) {
+			
+				if (!dataCount[val.language]) {
+					dataCount[val.language] = 0;
+				}
+				
+				if (!dataSpeed[val.language]) {
+					dataSpeed[val.language] = 0;
+				}
+				
+				if (!dataStars[val.language]) {
+					dataStars[val.language] = 0;
+				}
+				
+				if (!dataCommits[val.language]) {
+					dataCommits[val.language] = 0;
+				}
+				
+				if (!dataForks[val.language]) {
+					dataForks[val.language] = 0;
+				}
+				
+				dataSpeed[val.language] = parseFloat(dataSpeed[val.language]) + parseFloat(val.speed);
+				dataStars[val.language] = dataStars[val.language] + val.stargazers_count;
+				// В ответе от сервера нет поля с количеством коммитов. Пока оставил size, надо заменить!
+				dataCommits[val.language] = dataCommits[val.language] + val.size;
+				dataForks[val.language] = dataForks[val.language] + val.forks;
+				
+				dataCount[val.language] += 1;
+				
+				if (dataMax.speed < val.speed) {
+					dataMax.speed = parseInt(val.speed)+1;
+				}
+			
+				
+				if (dataMax.stars < val.stargazers_count) {
+					dataMax.stars = val.stargazers_count+1;
+				}
+
+				if (dataMax.commits < val.size) {
+					dataMax.commits = val.size+1;
+				}
+
+				if (dataMax.forks < val.forks) {
+					dataMax.forks = val.forks+1;
+				}				
+				
+			});
+			
+		
+			$('input[name=speed]').val("0,"+dataMax.speed);
+			$('input[name=stars]').val("0,"+dataMax.stars);
+			$('input[name=commits]').val("0,"+dataMax.commits);
+			$('input[name=forks]').val("0,"+dataMax.forks);
+			
+			console.log("0,"+dataMax.speed);
+			
+			var langs = $.map(dataCount, function(element,index) {return index});
+			
+			
+			
+			for (var key in dataCount) {
+			  if (dataCount.hasOwnProperty(key)) {
+					dataStars[key] = dataStars[key] / dataCount[key];
+					dataSpeed[key] = dataSpeed[key] / dataCount[key];
+					dataCommits[key] = dataCommits[key] / dataCount[key];
+					dataForks[key] = dataForks[key] / dataCount[key];
+			  }
+			}
+			
+			if (!filterMax) {
+				sliderSpeed.destroy();
+				sliderStars.destroy();
+				sliderCommits.destroy();
+				sliderForks.destroy();
+				
+				sliderSpeed = new Slider("#sliderSpeed", { id: "sliderSpeed", min: 0, max: dataMax.speed, range: true, value: [0, dataMax.speed], tooltip: "always" });
+				sliderStars = new Slider("#sliderStars", { id: "sliderStars", min: 0, max: dataMax.stars, range: true, value: [0, dataMax.stars], tooltip: "always" });
+				sliderCommits = new Slider("#sliderCommits", { id: "sliderCommits", min: 0, max: dataMax.commits, range: true, value: [0, dataMax.commits], tooltip: "always" });
+				sliderForks = new Slider("#sliderForks", { id: "sliderForks", min: 0, max: dataMax.forks, range: true, value: [0, dataMax.forks], tooltip: "always" });		
+				
+				filterMax = 1;
+			}
+			
+	var areaSpeedData = {
+      labels  : Object.keys(dataSpeed),
       datasets: [
         {
-          label               : 'Electronics',
-          fillColor           : 'rgba(210, 214, 222, 1)',
-          strokeColor         : 'rgba(210, 214, 222, 1)',
-          pointColor          : 'rgba(210, 214, 222, 1)',
+          label               : 'Скорость',
+          fillColor           : '#00a65a',
+          strokeColor         : '#00a65a',
+          pointColor          : '#00a65a',
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40]
+          data                : Object.values(dataSpeed)
         },
-        {
-          label               : 'Digital Goods',
-          fillColor           : 'rgba(60,141,188,0.9)',
-          strokeColor         : 'rgba(60,141,188,0.8)',
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90]
-        }
-      ]
-    }
-	
-	  var areaSpeedData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [
-        {
-          label               : 'Electronics',
-          fillColor           : 'rgba(210, 214, 222, 1)',
-          strokeColor         : 'rgba(210, 214, 222, 1)',
-          pointColor          : 'rgba(210, 214, 222, 1)',
-          pointStrokeColor    : '#c1c7d1',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-          label               : 'Digital Goods',
-          fillColor           : 'rgba(60,141,188,0.9)',
-          strokeColor         : 'rgba(60,141,188,0.8)',
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90]
-        }
       ]
     }
 	
 	  var areaStarsData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels  : Object.keys(dataStars),
       datasets: [
         {
-          label               : 'Electronics',
-          fillColor           : 'rgba(210, 214, 222, 1)',
-          strokeColor         : 'rgba(210, 214, 222, 1)',
-          pointColor          : 'rgba(210, 214, 222, 1)',
+          label               : 'Звездочки',
+          fillColor           : '#00a65a',
+          strokeColor         : '#00a65a',
+          pointColor          : '#00a65a',
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-          label               : 'Digital Goods',
-          fillColor           : 'rgba(60,141,188,0.9)',
-          strokeColor         : 'rgba(60,141,188,0.8)',
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90]
+          data                : Object.values(dataStars)
         }
       ]
     }
 	
 	  var areaCommitsData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels  : Object.keys(dataCommits),
       datasets: [
         {
-          label               : 'Electronics',
-          fillColor           : 'rgba(210, 214, 222, 1)',
-          strokeColor         : 'rgba(210, 214, 222, 1)',
-          pointColor          : 'rgba(210, 214, 222, 1)',
+          label               : 'Коммиты',
+          fillColor           : '#00a65a',
+          strokeColor         : '#00a65a',
+          pointColor          : '#00a65a',
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-          label               : 'Digital Goods',
-          fillColor           : 'rgba(60,141,188,0.9)',
-          strokeColor         : 'rgba(60,141,188,0.8)',
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90]
+          data                : Object.values(dataCommits)
         }
       ]
     }
 	
 	  var areaForksData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels  : Object.keys(dataForks),
       datasets: [
         {
-          label               : 'Electronics',
-          fillColor           : 'rgba(210, 214, 222, 1)',
-          strokeColor         : 'rgba(210, 214, 222, 1)',
-          pointColor          : 'rgba(210, 214, 222, 1)',
+          label               : 'Форки',
+          fillColor           : '#00a65a',
+          strokeColor         : '#00a65a',
+          pointColor          : '#00a65a',
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-          label               : 'Digital Goods',
-          fillColor           : 'rgba(60,141,188,0.9)',
-          strokeColor         : 'rgba(60,141,188,0.8)',
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90]
+          data                : Object.values(dataForks)
         }
       ]
     }
@@ -420,57 +474,15 @@
     //-------------
     //- BAR CHART -
     //-------------
-    var peopleCanvas                   = $('#peopleChart').get(0).getContext('2d')
 	
-	var barChart                         = new Chart(peopleCanvas)
-    var barChartData                     = areaPeopleData
-    barChartData.datasets[1].fillColor   = '#00a65a'
-    barChartData.datasets[1].strokeColor = '#00a65a'
-    barChartData.datasets[1].pointColor  = '#00a65a'
-    var barChartOptions                  = {
-      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-      scaleBeginAtZero        : true,
-      //Boolean - Whether grid lines are shown across the chart
-      scaleShowGridLines      : true,
-      //String - Colour of the grid lines
-      scaleGridLineColor      : 'rgba(0,0,0,.05)',
-      //Number - Width of the grid lines
-      scaleGridLineWidth      : 1,
-      //Boolean - Whether to show horizontal lines (except X axis)
-      scaleShowHorizontalLines: true,
-      //Boolean - Whether to show vertical lines (except Y axis)
-      scaleShowVerticalLines  : true,
-      //Boolean - If there is a stroke on each bar
-      barShowStroke           : true,
-      //Number - Pixel width of the bar stroke
-      barStrokeWidth          : 2,
-      //Number - Spacing between each of the X value sets
-      barValueSpacing         : 5,
-      //Number - Spacing between data sets within X values
-      barDatasetSpacing       : 1,
-      //String - A legend template
-      legendTemplate          : '',
-      //Boolean - whether to make the chart responsive
-      responsive              : true,
-      maintainAspectRatio     : true
-    }
+	barChart1                         = new Chart(starsCanvas);
+	barChart2                         = new Chart(speedCanvas);
+	barChart3                         = new Chart(commitsCanvas);
+	barChart4                         = new Chart(forksCanvas);
+	
+	
 
-    barChartOptions.datasetFill = false
-    barChart.Bar(barChartData, barChartOptions)
-	
-	
-	
-	
-	
-	
-	
-	var starsCanvas                   = $('#starsChart').get(0).getContext('2d')
-	
-	var barChart                         = new Chart(starsCanvas)
     var barChartData                     = areaStarsData
-    barChartData.datasets[1].fillColor   = '#00a65a'
-    barChartData.datasets[1].strokeColor = '#00a65a'
-    barChartData.datasets[1].pointColor  = '#00a65a'
     var barChartOptions                  = {
       //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
       scaleBeginAtZero        : true,
@@ -500,20 +512,12 @@
     }
 
     barChartOptions.datasetFill = false
-    barChart.Bar(barChartData, barChartOptions)
+    barChart1 = barChart1.Bar(barChartData, barChartOptions)
 	
 	
 	
-	
-	
-	
-	var speedCanvas                   = $('#speedChart').get(0).getContext('2d')
-	
-	var barChart                         = new Chart(speedCanvas)
+
     var barChartData                     = areaSpeedData
-    barChartData.datasets[1].fillColor   = '#00a65a'
-    barChartData.datasets[1].strokeColor = '#00a65a'
-    barChartData.datasets[1].pointColor  = '#00a65a'
     var barChartOptions                  = {
       //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
       scaleBeginAtZero        : true,
@@ -543,17 +547,10 @@
     }
 
     barChartOptions.datasetFill = false
-    barChart.Bar(barChartData, barChartOptions)
+    barChart2 = barChart2.Bar(barChartData, barChartOptions)
 	
 	
-	
-	var commitsCanvas                   = $('#commitsChart').get(0).getContext('2d')
-	
-	var barChart                         = new Chart(commitsCanvas)
     var barChartData                     = areaCommitsData
-    barChartData.datasets[1].fillColor   = '#00a65a'
-    barChartData.datasets[1].strokeColor = '#00a65a'
-    barChartData.datasets[1].pointColor  = '#00a65a'
     var barChartOptions                  = {
       //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
       scaleBeginAtZero        : true,
@@ -583,17 +580,9 @@
     }
 
     barChartOptions.datasetFill = false
-    barChart.Bar(barChartData, barChartOptions)
+    barChart3 = barChart3.Bar(barChartData, barChartOptions)
 	
-	
-	var forksCanvas                   = $('#forksChart').get(0).getContext('2d')
-	
-	
-    var barChart                         = new Chart(forksCanvas)
     var barChartData                     = areaForksData
-    barChartData.datasets[1].fillColor   = '#00a65a'
-    barChartData.datasets[1].strokeColor = '#00a65a'
-    barChartData.datasets[1].pointColor  = '#00a65a'
     var barChartOptions                  = {
       //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
       scaleBeginAtZero        : true,
@@ -623,7 +612,18 @@
     }
 
     barChartOptions.datasetFill = false
-    barChart.Bar(barChartData, barChartOptions)
+    barChart4 = barChart4.Bar(barChartData, barChartOptions)
+			
+		}
+
+  $(function () {
+	  filterData();
+	  
+	  $("#filter-action").click(function(){
+		filterData();
+	  });
+	  
+	  
 
   })
 </script>

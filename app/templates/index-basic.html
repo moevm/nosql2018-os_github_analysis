@@ -26,42 +26,42 @@
 				<header id="header">
 
 					<h2>Что будем грузить в базу?</h2>
-						
+					<form id="lang-form">
 					<section class="flat-row mail-chimp1">
 			            <div class="container">
 				            <div class="row">
 					          <div class="checkbox">
-					            <div class="col-xs-2"><label class="checkbox-inline"><input type="checkbox" value="">CSS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
-                                <div class="col-xs-3"><label class="checkbox-inline"><input type="checkbox" value="">Python&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
+					            <div class="col-xs-2"><label class="checkbox-inline"><input type="checkbox" class="lang-check" name="languages[]" value="CSS">CSS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
+                                <div class="col-xs-3"><label class="checkbox-inline"><input type="checkbox" class="lang-check" name="languages[]" value="Python">Python&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
                               </div>
 				            </div>
 							<div class="row">
 							  <div class="checkbox">
-                               <div class="col-xs-2"><label class="checkbox-inline"><input type="checkbox" value="">C#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
-                               <div class="col-xs-3"><label class="checkbox-inline"><input type="checkbox" value="">Ruby&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
+                               <div class="col-xs-2"><label class="checkbox-inline"><input type="checkbox" class="lang-check" name="languages[]" value="C#">C#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
+                               <div class="col-xs-3"><label class="checkbox-inline"><input type="checkbox" class="lang-check" name="languages[]" value="Ruby">Ruby&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
 					          </div>
 					        </div>
 					        <div class="row">
 							  <div class="checkbox">
-                               <div class="col-xs-2"><label class="checkbox-inline"><input type="checkbox" value="">Java&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
-                               <div class="col-xs-3"><label class="checkbox-inline"><input type="checkbox" value="">HTML&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
+                               <div class="col-xs-2"><label class="checkbox-inline"><input type="checkbox" class="lang-check" name="languages[]" value="Java">Java&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
+                               <div class="col-xs-3"><label class="checkbox-inline"><input type="checkbox" class="lang-check" name="languages[]" value="HTML">HTML&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
 					          </div>
 					        </div>
                             <div class="row">
 							  <div class="checkbox">
-					           <div class="col-xs-2"><label class="checkbox-inline"><input type="checkbox" value="">JavaScript</label></div>
-                               <div class="col-xs-3"><label class="checkbox-inline"><input type="checkbox" value="">PHP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
+					           <div class="col-xs-2"><label class="checkbox-inline"><input type="checkbox" class="lang-check" name="languages[]" value="JavaScript">JavaScript</label></div>
+                               <div class="col-xs-3"><label class="checkbox-inline"><input type="checkbox" class="lang-check" name="languages[]" value="PHP">PHP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
 					          </div>
 					        </div>
 					        <div class="row">
 							  <div class="checkbox">
-					           <div class="col-xs-2"><label class="checkbox-inline"><input type="checkbox" value="">Shell&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
-                               <div class="col-xs-3"><label class="checkbox-inline"><input type="checkbox" value="">Go&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
+					           <div class="col-xs-2"><label class="checkbox-inline"><input type="checkbox" class="lang-check" name="languages[]" value="Shell">Shell&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
+                               <div class="col-xs-3"><label class="checkbox-inline"><input type="checkbox" class="lang-check" name="languages[]" value="Go">Go&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
 					          </div>
 							</div>
 			            </div>
 		            </section>
-					
+					</form>
 					<nav>
 						<ul>
 							<li>
@@ -86,7 +86,7 @@
 					<nav>
 						<ul>
 							<li>
-								 <a href="/step2">
+								 <a href="/step2" id="init-lang">
 								<button type="button" class="btn btn-primary offset-8 btn-lg" aria-pressed="/step2">Перейти далее</button></a>
 							</li>	
 						</ul>
@@ -138,20 +138,32 @@
 
         jQuery(document).ready(function($){
 
-         $('.btn-primary').click(function(){
-
-         var dataRep = $('#queryTexte').val();
-
-            $.get( "http://localhost:5000?query="+dataRep, function( data ) {
-                     $('#div2').empty();
-                     ..............
-                     $('#div2').append("</table>");
-            }, "json")
-            .fail(function() {
-               $("#rep")
-                   .append('<br/><p style="color:red">Oops! Error with XMLHttpRequest</p>')
-            });
-        });
+			$('.lang-check').click(function(){
+				var mistake=1;
+				$( ".lang-check" ).each(function( index ) {
+					if ($(this).prop('checked')==checked){
+						mistake=0;
+					}
+				});
+				if (mistake==1){
+					alert('mistake');
+				}
+			});
+		
+			$('#init-lang').click(function(event){
+				event.preventDefault();
+				var lang_data = $('#lang-form').serialize();
+				
+				if (lang_data != '') {
+					$.get( "http://localhost:5000/init?"+lang_data, function( data ) {
+						window.location.href = '/step2';
+					}, "json")
+					.fail(function() {
+					   $("#rep")
+						   .append('<br/><p style="color:red">Oops! Error with XMLHttpRequest</p>')
+					});	
+				}			
+			});
     });
 </script>
 		
