@@ -248,6 +248,9 @@ def filter_list():
     for doc in filter_task:
         json_docs.append(doc)
 
+    with open('data_file.json', 'w') as write_file:
+        json.dump({"data": json_docs}, write_file, indent=4)
+
     return jsonify({"data": json_docs})
 
 
